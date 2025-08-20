@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sibylla</title>
+    <link rel="stylesheet" href="styles/grid.css">
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+
+<body>
+
+    <!-- Navigation Menu -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="#" class="nav-link">Home</a>
+                <a href="#" class="nav-link">About</a>
+                <a href="#" class="nav-link">Genesis Fund</a>
+            </div>
+
+            <div class="nav-center">
+                <a href="#" class="nav-logo">
+                    <img src="logo.svg" alt="Logo" class="logo-image">
+                </a>
+            </div>
+
+            <div class="nav-right">
+                <a href="#" class="nav-link">Technology</a>
+                <a href="#" class="nav-link">News</a>
+                <a href="#" class="nav-link">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Grid -->
+    <div class="hero-section">
+
+        <!-- Dot Grid Background Component -->
+        <dot-grid-background id="dotGrid"></dot-grid-background>
+
+        <div class="grid-container">
+            <div class="grid-row grid-align-center">
+                <!-- Hero Content -->
+                <div class="grid-col-6 hero-content">
+                    <h1 class="hero-title">Intelligence meets discipline</h1>
+                    <p class="hero-subtitle">
+                        Emotionless, data-driven strategies.<br>
+                        Nanosecond decision-making.
+                    </p>
+                    <div class="hero-cta">
+                        <button class="cta-button primary">Request information</button>
+                        <button class="cta-button secondary">Schedule a call</button>
+                    </div>
+                </div>
+
+                <!-- Gap Column -->
+                <div class="grid-col-1"></div>
+
+                <!-- Video Placeholder -->
+                <div class="grid-col-5 hero-video">
+                    <div class="video-container">
+                        <img src="video-placeholder.png" alt="Video placeholder" class="video-placeholder">
+                        <div class="video-overlay">
+                            <div class="play-button">▶</div>
+                        </div>
+                        <div class="video-caption">
+                            <div class="caption-name">Alex Bronstein</div>
+                            <div class="caption-title">Chief Scientist</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Load the web component -->
+    <script src="scripts/dot-grid-background.js?v=3.3"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Function to get current color scheme
+            function getColorScheme() {
+                return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
+
+            // Function to update dot grid background based on color scheme
+            function updateDotGridBackground() {
+                const dotGrid = document.getElementById('dotGrid');
+                if (dotGrid && dotGrid.setProperties) {
+                    const colorScheme = getColorScheme();
+                    const backgroundColor = colorScheme === 'dark' ? '#0a0a0a' : '#ffffff';
+                    const dotColor = colorScheme === 'dark' ? '#ffffff' : '#000000';
+
+                    // Check if user prefers reduced motion
+                    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+                    dotGrid.setProperties({
+                        backgroundColor: backgroundColor,
+                        dotColor: dotColor,
+                        eventColor: colorScheme === 'dark' ? '#ffffff' : '#000000',
+                        // Disable animations if user prefers reduced motion
+                        waveEnabled: !prefersReducedMotion,
+                        eventsEnabled: !prefersReducedMotion,
+                        gravityStrength: prefersReducedMotion ? 0 : 2.0
+                    });
+                }
+            }
+
+            // Listen for color scheme changes
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateDotGridBackground);
+
+            // Listen for reduced motion preference changes
+            window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', updateDotGridBackground);
+
+            setTimeout(() => {
+                // Initialize dot grid background based on current color scheme
+                updateDotGridBackground();
+            }, 100);
+        });
+    </script>
+</body>
+
+</html>

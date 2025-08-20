@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pyramid Builder Demo</title>
+    <link rel="stylesheet" href="styles/grid.css">
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+
+<body>
+    <!-- Demo Container -->
+    <div class="demo-container">
+        <!-- Pyramid Builder Component -->
+        <div class="pyramid-wrapper">
+            <pyramid-builder id="pyramidBuilder"></pyramid-builder>
+        </div>
+
+        <!-- Demo Controls -->
+        <div class="demo-controls">
+            <h2>Pyramid Builder Controls</h2>
+
+            <!-- Basic Settings -->
+            <h3>Basic Settings</h3>
+            <div class="control-group">
+                <label for="dotSize">Dot Size: <span id="dotSizeValue">1.5px</span></label>
+                <input type="range" id="dotSize" min="1" max="6" value="1.5" step="0.5">
+            </div>
+
+            <div class="control-group">
+                <label for="dotSpacing">Dot Spacing: <span id="dotSpacingValue">20px</span></label>
+                <input type="range" id="dotSpacing" min="8" max="30" value="20">
+            </div>
+
+            <div class="control-group">
+                <label for="dotColor">Dot Color:</label>
+                <input type="color" id="dotColor" value="#000000">
+            </div>
+
+            <div class="control-group">
+                <label for="backgroundColor">Background Color:</label>
+                <input type="color" id="backgroundColor" value="#ffffff">
+            </div>
+
+            <!-- Pyramid Dimensions -->
+            <h3>Pyramid Dimensions</h3>
+            <div class="control-group">
+                <label for="pyramidHeight">Pyramid Height: <span id="pyramidHeightValue">300px</span></label>
+                <input type="range" id="pyramidHeight" min="200" max="500" value="300">
+            </div>
+
+            <div class="control-group">
+                <label for="pyramidWidth">Pyramid Width: <span id="pyramidWidthValue">400px</span></label>
+                <input type="range" id="pyramidWidth" min="200" max="600" value="400">
+            </div>
+
+            <!-- Build Animation -->
+            <h3>Build Animation</h3>
+            <div class="control-group">
+                <label for="buildInterval">Build Interval: <span id="buildIntervalValue">1000ms</span></label>
+                <input type="range" id="buildInterval" min="200" max="2000" value="1000" step="100">
+            </div>
+
+            <div class="control-group">
+                <label for="dropDistance">Drop Distance: <span id="dropDistanceValue">100px</span></label>
+                <input type="range" id="dropDistance" min="50" max="200" value="100">
+            </div>
+
+            <div class="control-group">
+                <label for="dropDuration">Drop Duration: <span id="dropDurationValue">800ms</span></label>
+                <input type="range" id="dropDuration" min="300" max="1500" value="800" step="100">
+            </div>
+
+            <!-- Mouse Interaction -->
+            <h3>Mouse Interaction</h3>
+            <div class="control-group">
+                <label for="mouseInfluenceStrength">Mouse Influence: <span
+                        id="mouseInfluenceStrengthValue">0.05</span></label>
+                <input type="range" id="mouseInfluenceStrength" min="0.01" max="0.2" value="0.05" step="0.01">
+            </div>
+
+            <!-- Action Buttons -->
+            <h3>Actions</h3>
+            <div class="action-buttons">
+                <button id="resetButton" class="action-button">Reset Pyramid</button>
+                <button id="rebuildButton" class="action-button">Rebuild</button>
+            </div>
+
+            <!-- Status Display -->
+            <div class="status-display">
+                <div class="status-item">
+                    <span class="status-label">Progress:</span>
+                    <span id="progressValue" class="status-value">0%</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Built Dots:</span>
+                    <span id="builtDotsValue" class="status-value">0</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Total Dots:</span>
+                    <span id="totalDotsValue" class="status-value">0</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Status:</span>
+                    <span id="statusValue" class="status-value">Initializing</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load the web component -->
+    <script src="scripts/pyramid-builder.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Wait for the component to be fully initialized
+            setTimeout(() => {
+                const pyramidBuilder = document.getElementById('pyramidBuilder');
+
+                if (!pyramidBuilder || !pyramidBuilder.setProperties) {
+                    console.error('Pyramid builder component not ready');
+                    return;
+                }
+
+                function updateComponent() {
+                    const properties = {
+                        dotSize: parseFloat(document.getElementById('dotSize').value),
+                        dotSpacing: parseInt(document.getElementById('dotSpacing').value),
+                        dotColor: document.getElementById('dotColor').value,
+                        backgroundColor: document.getElementById('backgroundColor').value,
+                        pyramidHeight: parseInt(document.getElementById('pyramidHeight').value),
+                        pyramidWidth: parseInt(document.getElementById('pyramidWidth').value),
+                        buildInterval: parseInt(document.getElementById('buildInterval').value),
+                        dropDistance: parseInt(document.getElementById('dropDistance').value),
+                        dropDuration: parseInt(document.getElementById('dropDuration').value),
+                        mouseInfluenceStrength: parseFloat(document.getElementById('mouseInfluenceStrength').value)
+                    };
+
+                    if (pyramidBuilder.setProperties) {
+                        pyramidBuilder.setProperties(properties);
+                    }
+
+                    // Update value displays
+                    document.getElementById('dotSizeValue').textContent = properties.dotSize + 'px';
+                    document.getElementById('dotSpacingValue').textContent = properties.dotSpacing + 'px';
+                    document.getElementById('pyramidHeightValue').textContent = properties.pyramidHeight + 'px';
+                    document.getElementById('pyramidWidthValue').textContent = properties.pyramidWidth + 'px';
+                    document.getElementById('buildIntervalValue').textContent = properties.buildInterval + 'ms';
+                    document.getElementById('dropDistanceValue').textContent = properties.dropDistance + 'px';
+                    document.getElementById('dropDurationValue').textContent = properties.dropDuration + 'ms';
+                    document.getElementById('mouseInfluenceStrengthValue').textContent = properties.mouseInfluenceStrength.toFixed(2);
+                }
+
+                // Bind controls
+                const controls = [
+                    'dotSize', 'dotSpacing', 'dotColor', 'backgroundColor',
+                    'pyramidHeight', 'pyramidWidth', 'buildInterval', 'dropDistance', 'dropDuration',
+                    'mouseInfluenceStrength'
+                ];
+
+                controls.forEach(controlId => {
+                    const element = document.getElementById(controlId);
+                    element.addEventListener('input', updateComponent);
+                    element.addEventListener('change', updateComponent);
+                });
+
+                // Action buttons
+                document.getElementById('resetButton').addEventListener('click', () => {
+                    pyramidBuilder.reset();
+                });
+
+                document.getElementById('rebuildButton').addEventListener('click', () => {
+                    pyramidBuilder.reset();
+                });
+
+                // Status update loop
+                function updateStatus() {
+                    if (!pyramidBuilder || !pyramidBuilder.getBuildProgress) {
+                        return;
+                    }
+
+                    const progress = pyramidBuilder.getBuildProgress();
+                    const isCompleted = pyramidBuilder.isCompleted();
+                    const totalDots = pyramidBuilder.getTotalDots();
+                    const builtDots = pyramidBuilder.getBuiltDots();
+
+                    document.getElementById('progressValue').textContent = progress + '%';
+                    document.getElementById('statusValue').textContent = isCompleted ? 'Complete' : 'Building';
+                    document.getElementById('builtDotsValue').textContent = builtDots;
+                    document.getElementById('totalDotsValue').textContent = totalDots;
+                }
+
+                // Update status every 100ms
+                setInterval(updateStatus, 100);
+
+                // Initial update
+                updateComponent();
+            }, 100); // Small delay to ensure component is ready
+        });
+    </script>
+</body>
+
+</html>

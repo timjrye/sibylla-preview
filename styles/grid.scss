@@ -1,0 +1,228 @@
+// ===== GRID SYSTEM =====
+
+// Variables
+$max-width-large: 1400px;
+$max-width-medium: 1200px;
+$max-width-small: 1000px;
+$grid-columns: 12;
+$grid-gap-small: 10px;
+$grid-gap-medium: 20px;
+$grid-gap-large: 30px;
+$grid-gap-extra-large: 40px;
+
+// Breakpoints
+$breakpoint-large: 1400px;
+$breakpoint-medium: 1200px;
+$breakpoint-tablet: 768px;
+$breakpoint-mobile: 480px;
+
+// Mixins
+@mixin responsive-max($breakpoint) {
+  @media (max-width: $breakpoint) {
+    @content;
+  }
+}
+
+@mixin responsive-min($breakpoint) {
+  @media (min-width: $breakpoint) {
+    @content;
+  }
+}
+
+// Container for grid layouts
+.grid-container {
+  width: 100%;
+  max-width: $max-width-large;
+  margin: 0 auto;
+  padding: 0 20px;
+
+  @include responsive-max($breakpoint-large) {
+    max-width: $max-width-medium;
+    padding: 0 15px;
+  }
+
+  @include responsive-max($breakpoint-medium) {
+    max-width: $max-width-small;
+    padding: 0 15px;
+  }
+
+  @include responsive-max($breakpoint-tablet) {
+    padding: 0 10px;
+  }
+
+  @include responsive-max($breakpoint-mobile) {
+    padding: 0 8px;
+  }
+}
+
+// Grid row wrapper
+.grid-row {
+  display: grid;
+  gap: $grid-gap-medium;
+  align-items: start;
+  grid-template-columns: repeat($grid-columns, 1fr);
+}
+
+// Grid columns - 12 column system
+@for $i from 1 through $grid-columns {
+  .grid-col-#{$i} {
+    grid-column: span $i;
+  }
+}
+
+// Mobile responsive - stack all columns
+@include responsive-max($breakpoint-tablet) {
+  @for $i from 1 through $grid-columns {
+    .grid-col-#{$i} {
+      grid-column: span $grid-columns;
+    }
+  }
+}
+
+// Grid gap variations
+.grid-gap-sm {
+  gap: $grid-gap-small;
+}
+
+.grid-gap-md {
+  gap: $grid-gap-medium;
+}
+
+.grid-gap-lg {
+  gap: $grid-gap-large;
+}
+
+.grid-gap-xl {
+  gap: $grid-gap-extra-large;
+}
+
+// Responsive gap adjustments
+@include responsive-max($breakpoint-tablet) {
+  .grid-gap-lg {
+    gap: $grid-gap-medium;
+  }
+
+  .grid-gap-xl {
+    gap: 25px;
+  }
+}
+
+@include responsive-max($breakpoint-mobile) {
+  .grid-gap-md {
+    gap: 15px;
+  }
+
+  .grid-gap-lg {
+    gap: 15px;
+  }
+
+  .grid-gap-xl {
+    gap: $grid-gap-medium;
+  }
+}
+
+// Grid alignment utilities
+.grid-align-start {
+  align-items: start;
+}
+
+.grid-align-center {
+  align-items: center;
+}
+
+.grid-align-end {
+  align-items: end;
+}
+
+.grid-align-stretch {
+  align-items: stretch;
+}
+
+.grid-justify-start {
+  justify-items: start;
+}
+
+.grid-justify-center {
+  justify-items: center;
+}
+
+.grid-justify-end {
+  justify-items: end;
+}
+
+.grid-justify-stretch {
+  justify-items: stretch;
+}
+
+// Common grid layouts
+.grid-2-col {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-3-col {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-4-col {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.grid-6-col {
+  grid-template-columns: repeat(6, 1fr);
+}
+
+// Mobile responsive grid layouts
+@include responsive-max($breakpoint-tablet) {
+  .grid-2-col,
+  .grid-3-col,
+  .grid-4-col,
+  .grid-6-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Auto-fit grid layouts
+.grid-auto-fit-sm {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.grid-auto-fit-md {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.grid-auto-fit-lg {
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+}
+
+// Mobile responsive auto-fit grids
+@include responsive-max($breakpoint-tablet) {
+  .grid-auto-fit-sm,
+  .grid-auto-fit-md,
+  .grid-auto-fit-lg {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Grid areas for complex layouts
+.grid-areas-hero {
+  grid-template-areas:
+    "nav nav nav"
+    "content content sidebar"
+    "footer footer footer";
+}
+
+.grid-area-nav {
+  grid-area: nav;
+}
+
+.grid-area-content {
+  grid-area: content;
+}
+
+.grid-area-sidebar {
+  grid-area: sidebar;
+}
+
+.grid-area-footer {
+  grid-area: footer;
+}

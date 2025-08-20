@@ -1,0 +1,11 @@
+{
+    "name": "Sibylla",
+    "version": "1.0.0",
+    "description": "Sibylla project with SASS compilation",
+    "scripts": {
+        "sass": "sass styles/styles.scss:styles/styles.css styles/grid.scss:styles/grid.css",
+        "sass:watch": "sass --watch styles/styles.scss:styles/styles.css styles/grid.scss:styles/grid.css",
+        "sass:compressed": "sass --style=compressed styles/styles.scss:styles/styles.css styles/grid.scss:styles/grid.css",
+        "sass:sourcemap": "sass --source-map styles/styles.scss:styles/styles.css styles/grid.scss:styles/grid.css"
+    }
+}
