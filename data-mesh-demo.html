@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Mesh Demo</title>
+    <link rel="stylesheet" href="styles/grid.css">
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+
+<body>
+    <div class="mesh-demo-container">
+        <div class="mesh-wrapper">
+            <data-mesh-graph id="mesh"></data-mesh-graph>
+        </div>
+
+        <div class="mesh-controls">
+            <h2>Data Mesh Controls</h2>
+
+            <div class="control-group">
+                <label for="nodeCount">Nodes: <span id="nodeCountValue">120</span></label>
+                <input type="range" id="nodeCount" min="24" max="300" step="4" value="120">
+            </div>
+
+            <div class="control-group">
+                <label for="connections">Connections per node: <span id="connectionsValue">3</span></label>
+                <input type="range" id="connections" min="1" max="8" step="1" value="3">
+            </div>
+
+            <div class="control-group">
+                <label for="neighborAngle">Max neighbor angle: <span id="neighborAngleValue">1.10 rad</span></label>
+                <input type="range" id="neighborAngle" min="0.6" max="1.6" step="0.05" value="1.1">
+            </div>
+
+            <div class="control-group">
+                <label for="speed">Rotation speed: <span id="speedValue">1.0x</span></label>
+                <input type="range" id="speed" min="0" max="2" step="0.1" value="1">
+            </div>
+
+            <div class="control-group">
+                <label for="drift">Drift amount: <span id="driftValue">1.0x</span></label>
+                <input type="range" id="drift" min="0" max="3" step="0.1" value="1.5">
+            </div>
+
+            <div class="control-group">
+                <label for="edgeInterval">Edge update interval: <span id="edgeIntervalValue">800ms</span></label>
+                <input type="range" id="edgeInterval" min="200" max="2000" step="50" value="800">
+            </div>
+
+            <div class="control-group">
+                <label for="nodeSize">Node size: <span id="nodeSizeValue">1.8</span></label>
+                <input type="range" id="nodeSize" min="0.5" max="4" step="0.1" value="1.8">
+            </div>
+
+            <div class="control-group">
+                <label for="linkWidth">Link width: <span id="linkWidthValue">1.0</span></label>
+                <input type="range" id="linkWidth" min="0.5" max="3" step="0.1" value="1.0">
+            </div>
+
+            <div class="metrics">
+                <div>Nodes: <span id="nodesMetric">0</span></div>
+                <div>Edges: <span id="edgesMetric">0</span></div>
+            </div>
+
+            <div class="action-buttons" style="margin-top:12px;">
+                <button id="resetMesh" class="action-button">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts/data-mesh.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mesh = document.getElementById('mesh');
+
+            function update() {
+                const speedFactor = parseFloat(document.getElementById('speed').value);
+                const nodeCount = parseInt(document.getElementById('nodeCount').value, 10);
+                const connections = parseInt(document.getElementById('connections').value, 10);
+                const neighborAngle = parseFloat(document.getElementById('neighborAngle').value);
+                const driftFactor = parseFloat(document.getElementById('drift').value);
+                const edgeInterval = parseInt(document.getElementById('edgeInterval').value, 10);
+                const nodeSize = parseFloat(document.getElementById('nodeSize').value);
+                const linkWidth = parseFloat(document.getElementById('linkWidth').value);
+
+                document.getElementById('nodeCountValue').textContent = nodeCount;
+                document.getElementById('connectionsValue').textContent = connections;
+                document.getElementById('speedValue').textContent = speedFactor.toFixed(1) + 'x';
+                document.getElementById('neighborAngleValue').textContent = neighborAngle.toFixed(2) + ' rad';
+                document.getElementById('driftValue').textContent = driftFactor.toFixed(1) + 'x';
+                document.getElementById('edgeIntervalValue').textContent = edgeInterval + 'ms';
+                document.getElementById('nodeSizeValue').textContent = nodeSize.toFixed(1);
+                document.getElementById('linkWidthValue').textContent = linkWidth.toFixed(1);
+
+                mesh.setProperties({
+                    nodeCount: nodeCount,
+                    connectionsPerNode: connections,
+                    rotationSpeedX: 0.0025 * speedFactor,
+                    rotationSpeedY: 0.0015 * speedFactor,
+                    maxNeighborAngle: neighborAngle,
+                    driftSpeedBase: 0.14 * driftFactor,
+                    edgeUpdateIntervalMs: edgeInterval,
+                    nodeSize: nodeSize,
+                    linkWidth: linkWidth
+                });
+
+                // metrics
+                document.getElementById('nodesMetric').textContent = mesh.getNodeCount();
+                document.getElementById('edgesMetric').textContent = mesh.getEdgeCount();
+            }
+
+            ['nodeCount', 'connections', 'speed', 'neighborAngle', 'drift', 'edgeInterval', 'nodeSize', 'linkWidth']
+                .forEach(id => {
+                    document.getElementById(id).addEventListener('input', update);
+                    document.getElementById(id).addEventListener('change', update);
+                });
+
+            document.getElementById('resetMesh').addEventListener('click', () => mesh.reset());
+
+            setTimeout(update, 50);
+        });
+    </script>
+</body>
+
+</html>
