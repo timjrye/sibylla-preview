@@ -563,10 +563,12 @@ body {
     &.primary {
         background: $accent-color;
         color: var(--primary-button-text);
+        border: 2px solid $accent-color;
 
         &:hover {
-            background: var(--secondary-color);
+            background: var(--background-color);
             transform: translateY(-2px);
+            border: 2px solid var(--button-border);
         }
     }
 

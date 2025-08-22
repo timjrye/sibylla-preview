@@ -497,10 +497,12 @@ body {
 .cta-button.primary {
   background: var(--accent-color);
   color: var(--primary-button-text);
+  border: 2px solid var(--accent-color);
 }
 .cta-button.primary:hover {
-  background: var(--secondary-color);
+  background: var(--background-color);
   transform: translateY(-2px);
+  border: 2px solid var(--button-border);
 }
 .cta-button.secondary {
   background: var(--button-bg);
@@ -779,6 +781,11 @@ body {
 .mesh-wrapper data-mesh-graph {
   position: absolute;
   inset: 0;
+}
+.mesh-wrapper pyramid-builder {
+  position: absolute;
+  inset: 0;
+  display: block;
 }
 
 .mesh-controls {
