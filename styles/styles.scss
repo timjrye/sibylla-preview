@@ -862,6 +862,12 @@ body {
         position: absolute;
         inset: 0;
     }
+
+    pyramid-builder {
+        position: absolute;
+        inset: 0;
+        display: block;
+    }
 }
 
 .mesh-controls {
