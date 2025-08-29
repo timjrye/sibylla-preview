@@ -92,7 +92,7 @@
                 if (dotGrid && dotGrid.setProperties) {
                     const colorScheme = getColorScheme();
                     const backgroundColor = colorScheme === 'dark' ? '#0a0a0a' : '#ffffff';
-                    const dotColor = colorScheme === 'dark' ? '#ffffff' : '#000000';
+                    const dotColor = colorScheme === 'dark' ? '#ffffff' : '#888888';
 
                     // Check if user prefers reduced motion
                     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -103,7 +103,6 @@
                         eventColor: colorScheme === 'dark' ? '#ffffff' : '#000000',
                         // Disable animations if user prefers reduced motion
                         waveEnabled: !prefersReducedMotion,
-                        //eventsEnabled: !prefersReducedMotion,
                         eventsEnabled: false,
                         gravityStrength: prefersReducedMotion ? 0 : 2.0
                     });
